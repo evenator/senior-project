@@ -1,0 +1,10 @@
+<launch>
+<param name="/use_sim_time" value="true"/>
+<node pkg="gmapping" type="slam_gmapping" name="mapper">
+	<remap from="/scan" to="/base_scan"/>
+</node>
+<node pkg="nav_view" type="nav_view" name="nav_viewer">
+	<remap from="/static_map" to="/dynamic_map"/>
+</node>
+<node pkg="rosbag" type="play" args="/home/ed/basic_localization_stage.bag --clock" name="bagPlayer"/>
+</launch>

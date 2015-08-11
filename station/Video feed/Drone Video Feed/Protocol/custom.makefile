@@ -1,0 +1,4 @@
+USE_OPENGL=yes
+USE_MACOSX=no
+USE_MINGW32=no
+

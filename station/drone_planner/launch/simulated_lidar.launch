@@ -1,0 +1,11 @@
+<launch>
+	<param name="/use_sim_time" value="true"/>
+	<node pkg="gmapping" type="slam_gmapping" name="mapper"></node>
+	<node pkg="tf" type="static_transform_publisher" name="base_tf_broadcaster" args="0 0 0 0 0 0 base_footprint base_link 100" />
+	<node pkg="tf" type="static_transform_publisher" name="laser_tf_broadcaster" args="0 0 0 0 0 0 base_link base_laser 100" />
+	<node pkg="drone_planner" type="pso.py" name="nav"/>
+	<node pkg="rosbag" type="play" args="/home/ed/basic_localization_stage.bag --clock" name="bagPlayer">
+		<remap from="base_footprint" to="nulllzzz"/>
+		<remap from="base_link" to="nulllzzasdfz"/>\
+	</node>
+</launch>

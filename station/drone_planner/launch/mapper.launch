@@ -1,0 +1,12 @@
+<launch>
+	<node pkg="gmapping" type="slam_gmapping" name="mapper">
+		<param name="map_update_interval" value="0.1"/>
+		<param name="angularUpdate" value=".02"/>
+		<param name="maxUrange" value="6"/>
+		<param name="linearUpdate" value="0.1"/>
+		<param name="srr" value=".2"/>
+		<param name="srt" value=".4"/>
+		<param name="str" value=".2"/>
+		<param name="stt" value=".4"/>
+	</node>
+</launch>

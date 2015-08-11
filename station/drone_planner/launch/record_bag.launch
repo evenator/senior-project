@@ -1,0 +1,7 @@
+<launch>
+	<node pkg="drone_planner" type="lidar_listener.py" name="lidar_listener"/>
+	<node pkg="tf" type="static_transform_publisher" name="base_tf_broadcaster" args="0 0 0 0 0 0 base_footprint base_link 100" />
+	<node pkg="tf" type="static_transform_publisher" name="laser_tf_broadcaster" args="0 0 0 -0.523593 0 0 base_link base_laser 100" />
+	<node pkg="drone_planner" type="pso.py" name="nav"/>
+	<node pkg="rosbag" type="record" name="bagRecorder" args="-a"/>
+</launch>

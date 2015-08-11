@@ -1,0 +1,20 @@
+<package>
+  <description brief="drone_planner">
+
+     drone_planner
+
+  </description>
+  <author>Edward Venator</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/drone_planner</url>
+  <depend package="std_msgs"/>
+  <depend package="rospy"/>
+  <depend package="sensor_msgs"/>
+  <depend package="nav_msgs"/>
+  <depend package="tf"/>
+  <depend package="gmapping"/>
+
+</package>
+
+

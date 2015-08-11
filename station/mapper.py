@@ -2,12 +2,13 @@
 
 import numpy, cv
 import threading, Queue, math
+import lidar_generator
 
 from lidar_listener import LidarListener
 
 class Mapper:
 
-	def __init__(self):
+	def __init__(self, simdata=False):
 		self.roi_size = 450
 		self.darken_gradient = (30, 30, 30, 30)
 		self.lighten_gradient = (70, 70, 70, 70)
@@ -15,23 +16,29 @@ class Mapper:
 		self.lock = False
 		
 		self.__q = Queue.Queue()
-		self.__listener = LidarListener(self.__q)
-		self.__m = cv.GetImage(cv.fromarray(255 * numpy.ones( (4000,4000,4), numpy.uint8 )))
+		self.simdata = simdata;
+		if not simdata:
+			self.__listener = LidarListener(self.__q)
+		else:
+			lidar_generator.main(self.__q)
+		self.__m = cv.GetImage(cv.fromarray(127 * numpy.ones( (4000,4000,4), numpy.uint8 )))
 		self.__innermask = cv.GetImage(cv.fromarray(numpy.zeros( (self.roi_size, self.roi_size), numpy.uint8 )))
 		self.__outermask = cv.GetImage(cv.fromarray(numpy.zeros( (self.roi_size, self.roi_size), numpy.uint8 )))
 		
 	def start(self):
-		try:
-			self.__listener.daemon = True
-			self.__listener.start()
-		except Exception as ex:
-			raise ex
+		if not self.simdata:
+			try:
+				self.__listener.daemon = True
+				self.__listener.start()
+			except Exception as ex:
+				raise ex
 			
 	def shutdown(self):
-		try:
-			self.__listener.kill = True
-		except Exception as ex:
-			raise ex
+		if not self.simdata:
+			try:
+				self.__listener.kill = True
+			except Exception as ex:
+				raise ex
 		
 	def obstaclePresent(self, abs_center, radius):
 		roi = (abs_center[0]-radius, abs_center[1]-radius, 2*radius, 2*radius)	
@@ -133,8 +140,8 @@ class Mapper:
 					if valid_ping == True:
 						cv.Circle(self.__outermask, (ping_x, ping_y), 3, 255, -1)
 					
-				# Append the origin to close the polygon's contour
-				inner_poly.append( (x, y) )
+				# Append the first ping to close the polygon's contour
+				inner_poly.append( inner_poly[0] )
 				
 				
 				# Finally create the inner scan mask
